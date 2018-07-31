@@ -7,10 +7,7 @@ type action =
   | Dismissed
   | Set(response);
 
-type mode =
-  | Clock
-  | Spinner
-  | Default;
+type mode = [ | `clock | `spinner | `default];
 
 let open_:
   (~hour: int=?, ~minute: int=?, ~is24Hour: bool=?, ~mode: mode=?, unit) =>
