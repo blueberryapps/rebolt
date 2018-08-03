@@ -39,7 +39,20 @@ let actionHandler = resp =>
   } else {
     failwith(
       "Unknown action received from TimePickerAndroid. Please report this in the bs-react-native repository",
-    )
+    );
+  };
+
+let rangeHandler = (valueName, valueFrom, valueTo, value) =>
+  switch (value) {
+  | None => None
+  | Some(v) =>
+    switch (v) {
+    | _good when v <= valueTo && v >= valueFrom => Some(v)
+    | _ =>
+      failwith(
+        {j|$valueName must be a value between $valueFrom and $valueTo|j},
+      )
+    }
   };
 
 [@bs.scope "TimePickerAndroid"] [@bs.module "react-native"]
@@ -48,8 +61,9 @@ external _open : optsJs => Js.Promise.t(responseJs) = "open";
 let open_ = (~hour=?, ~minute=?, ~is24Hour=?, ~mode=`default, ()) =>
   _open(
     optsJs(
-      ~hour=Js.Nullable.fromOption(hour),
-      ~minute=Js.Nullable.fromOption(minute),
+      ~hour=hour |> rangeHandler("Hour", 0, 23) |> Js.Nullable.fromOption,
+      ~minute=
+        minute |> rangeHandler("Minute", 0, 59) |> Js.Nullable.fromOption,
       ~is24Hour=Js.Nullable.fromOption(is24Hour),
       ~mode=modeToJs(mode),
     ),
