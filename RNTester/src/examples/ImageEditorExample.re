@@ -21,7 +21,7 @@ type action =
 
 let handleCropImage = (send, handler) =>
   ImageEditor.cropImage(
-    ~uri=URI("https://bit.ly/2ya4e2o"),
+    ~uri=`URI("https://bit.ly/2ya4e2o"),
     ~offset,
     ~size,
     ~displaySize,
@@ -53,7 +53,7 @@ module ImageEditorExample = {
           | Some(path) =>
             <Image
               source=(
-                URI(
+                `URI(
                   Image.(
                     imageURISource(
                       ~uri=path,

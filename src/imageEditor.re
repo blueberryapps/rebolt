@@ -1,6 +1,4 @@
-type imageSource =
-  | URI(string)
-  | Required(Packager.required);
+type imageSource = [ | `URI(string) | `Required(Packager.required)];
 
 type offset = {
   x: int,
@@ -50,8 +48,8 @@ external rawImageSourceJS : 'a => rawImageSourceJS = "%identity";
 
 let encodeSource = (imageSource: imageSource) =>
   switch (imageSource) {
-  | URI(imageSource) => rawImageSourceJS(imageSource)
-  | Required(imageSource) => rawImageSourceJS(imageSource)
+  | `URI(imageSource) => rawImageSourceJS(imageSource)
+  | `Required(imageSource) => rawImageSourceJS(imageSource)
   };
 
 [@bs.module "react-native"] [@bs.scope "ImageEditor"]
